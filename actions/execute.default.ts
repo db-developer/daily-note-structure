@@ -1,16 +1,21 @@
-import { App, TFile, moment }               from "obsidian";
-import * as path                            from "path";
-import { I18N, locale }                     from "../i18n";
-import * as log                             from "../log";
-import { DailyNoteStructurePluginSettings } from "../settings";
-import { FolderStructure }                  from "../structure"
+import { App, TFile, moment, normalizePath }  from "obsidian";
+import { I18N, locale }                       from "../i18n";
+import * as log                               from "../log";
+import { DailyNoteStructurePluginSettings }   from "../settings";
+import { FILE, FOLDER, FolderStructure }      from "../structure"
 
 /* configure moment */
 moment.locale( locale());
 
-const STRINGS = {
-  FILE:   "file",
-  FOLDER: "folder"
+/* standalone const required for type overloading */
+const DAYS = "days";
+
+/**
+ *  String constants for reuse.
+ */
+const STRINGS: {[ key: string ]: string } = {
+  FSLASH:   "/",
+  MDSUFFIX: ".md"
 }
 
 /**
@@ -72,7 +77,7 @@ function resolved( amoment: moment.Moment, patterns: Array<{[ key: string ]: str
          // Note: Sunday is 0, first day of Week is: 1
          const cday    = amoment.day();
          const delta   = cday < 1 ? 6 : cday - 1;
-         const frstday = moment( amoment ).add(((-1) * delta ), "days" );
+         const frstday = moment( amoment ).add(((-1) * delta ), DAYS );
          const format  = SPECIALWEEKMAP[ pattern.format ];
          pattern.resolved = frstday.format( format );
     }
@@ -121,8 +126,8 @@ function resolve( namepattern: string, amoment?: moment.Moment ): string {
  */
 async function createFolderImpl( app: App, parents: readonly string[], foldername: string ): Promise<string[]> {
   const returnvalue = [ ...parents, foldername ];
-  const folderpath  = path.join( ...returnvalue );
-  const folder      = app.vault.getFolderByPath( folderpath.replaceAll( "\\", "/" ));
+  const folderpath  = normalizePath( returnvalue.join( STRINGS.FSLASH ));
+  const folder      = app.vault.getFolderByPath( folderpath );
   if   ( folder ) { return Promise.resolve( returnvalue )}
   else { return app.vault.createFolder( folderpath ).then(() => { return returnvalue })}
 }
@@ -137,8 +142,8 @@ async function createFolderImpl( app: App, parents: readonly string[], foldernam
  */
 async function createFileImpl( app: App, parents: readonly string[], filename: string, filedata = "" ): Promise<TFile> {
   const filepatharr = [ ...parents, filename ];
-  const filepath    = path.join( ...filepatharr );
-  const file        = app.vault.getFileByPath( filepath.replaceAll( "\\", "/" ) );
+  const filepath    = normalizePath( filepatharr.join( STRINGS.FSLASH ));
+  const file        = app.vault.getFileByPath( filepath );
   if ( file ) { return Promise.resolve( file )}
   else { return app.vault.create( filepath, filedata )}
 }
@@ -155,7 +160,7 @@ async function createFileImpl( app: App, parents: readonly string[], filename: s
  *  @returns {FolderStructure} for a 'folder note' (file)
  */
 function createFolderStructure( app: App, node: FolderStructure ): FolderStructure {
-  return { type: "file", namepattern: node.namepattern + ".md", template: node.template }
+  return { type: FILE , namepattern: node.namepattern + STRINGS.MDSUFFIX, template: node.template }
 }
 
 /**
@@ -237,8 +242,8 @@ async function createFile( app: App, parents: readonly string[], node: FolderStr
  */
 function build( app: App, parents: readonly string[], structure: FolderStructure[]) {
   structure.forEach(( node: FolderStructure ) =>{
-    if      ( node.type === STRINGS.FILE   ) { createFile( app, parents, node )}
-    else if ( node.type === STRINGS.FOLDER ) { createFolder( app, parents, node )}
+    if      ( node.type === FILE   ) { createFile( app, parents, node )}
+    else if ( node.type === FOLDER ) { createFolder( app, parents, node )}
     else { log.notice( `${ I18N( "Settings property 'structure' contains unknown type:" )} '${ node.type }'` )}
   });
 }
