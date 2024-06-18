@@ -54,24 +54,24 @@ The structure itself is an Array of FolderStructure objects.
 
 ```json
 [{
-  type: "folder",
-  namepattern: "{{YYYY}}",
-  template: "Plugins/Templater/Templates/yearly_folder_note_template.md",
-  description: "yearly folder base",
-  children: [{
-    type: "folder",
-    namepattern: "{{MMOW}} - {{MMM}} {{YYYY}}",
-    template: undefined,
-    description: "folder matching the month for the first day in the week",
-    children: [{
-      type: "folder",
-      namepattern: "KW {{WW}} ({{MMM}} {{YYYY}})",
-      template: undefined,
-      description: "folder matching the years week",
-      children: [{
-        type: "file",
-        namepatern: "{{YYYY}}-{{MM}}-{{DD}}",
-        template: "Plugins/Templater/Templates/daily_template.md"
+  "type": "folder",
+  "namepattern": "{{YYYY}}",
+  "template": "Plugins/Templater/Templates/yearly_folder_note_template.md",
+  "description": "yearly folder base",
+  "children": [{
+    "type": "folder",
+    "namepattern": "{{MMOW}} - {{MMM}} {{YYYY}}",
+    "template": undefined,
+    "description": "folder matching the month for the first day in the week",
+    "children": [{
+      "type": "folder",
+      "namepattern": "KW {{WW}} ({{MMM}} {{YYYY}})",
+      "template": undefined,
+      "description": "folder matching the years week",
+      "children": [{
+        "type": "file",
+        "namepatern": "{{YYYY}}-{{MM}}-{{DD}}",
+        "template": "Plugins/Templater/Templates/daily_template.md"
       }]
     }]
   }]
