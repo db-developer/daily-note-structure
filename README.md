@@ -61,12 +61,12 @@ The structure itself is an Array of FolderStructure objects.
   "children": [{
     "type": "folder",
     "namepattern": "{{MMOW}} - {{MMM}} {{YYYY}}",
-    "template": undefined,
+    "template": null,
     "description": "folder matching the month for the first day in the week",
     "children": [{
       "type": "folder",
       "namepattern": "KW {{WW}} ({{MMM}} {{YYYY}})",
-      "template": undefined,
+      "template": null,
       "description": "folder matching the years week",
       "children": [{
         "type": "file",
