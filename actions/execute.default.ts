@@ -5,9 +5,7 @@ import * as log                             from "../log";
 import { DailyNoteStructurePluginSettings } from "../settings";
 import { FolderStructure }                  from "../structure"
 
-/* configure moment - (maybe:) TODO: replace by dynamic import */
-// import 'moment/locale/de';
-// import 'moment/locale/fr';
+/* configure moment */
 moment.locale( locale());
 
 const STRINGS = {
@@ -45,6 +43,9 @@ const FORMATKEYS = [
   "X"
 ];
 
+/**
+ *  A listing of format options provided by daily-note-structure
+ */
 const SPECIALWEEKKEYS = [ "MOW", "MoW", "MMOW", "MMMOW", "MMMMOW" ];
 const SPECIALWEEKMAP: {[ key: string ]: string } =  {
   MOW:    "M",
@@ -66,7 +67,6 @@ function resolved( amoment: moment.Moment, patterns: Array<{[ key: string ]: str
   patterns.forEach(( pattern ) => {
     if ( FORMATKEYS.contains( pattern.format )) {
          pattern.resolved = amoment.format( pattern.format );
-         
     }
     else if ( SPECIALWEEKKEYS.contains( pattern.format )) {
          // Note: Sunday is 0, first day of Week is: 1
