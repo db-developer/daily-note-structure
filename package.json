@@ -1,7 +1,7 @@
 {
 	"name": "daily-note-structure",
-	"version": "1.0.0",
-	"description": "This obsidian plugin creates a structure for your daily notes",
+	"version": "1.0.1",
+	"description": "One-Click create a structure for and including your daily notes.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
