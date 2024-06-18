@@ -1,0 +1,10 @@
+{
+	"id": "daily-note-structure-plugin",
+	"name": "Daily Note Structure Plugin",
+	"version": "1.0.0",
+	"minAppVersion": "1.6.3",
+	"description": "This obsidian plugin creates a structure for your daily notes",
+	"author": "Dirk Brenckmann",
+	"authorUrl": "https://slashlib.org",
+	"isDesktopOnly": false
+}
