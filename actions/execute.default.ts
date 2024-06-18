@@ -1,6 +1,4 @@
-import { Moment }                           from "moment";
-import moment                               from "moment";
-import { App, TFile }                       from "obsidian";
+import { App, TFile, moment }               from "obsidian";
 import * as path                            from "path";
 import { I18N, locale }                     from "../i18n";
 import * as log                             from "../log";
@@ -8,8 +6,8 @@ import { DailyNoteStructurePluginSettings } from "../settings";
 import { FolderStructure }                  from "../structure"
 
 /* configure moment - (maybe:) TODO: replace by dynamic import */
-import 'moment/locale/de';
-import 'moment/locale/fr';
+// import 'moment/locale/de';
+// import 'moment/locale/fr';
 moment.locale( locale());
 
 const STRINGS = {
@@ -61,13 +59,14 @@ const reg = new RegExp( "{{(\\w+)}}", "gm" );
 
 /**
  *  Adds the property 'resolvedÄ to 'patterns'
- *  @param {Moment} amoment 
+ *  @param {typeof moment} amoment 
  *  @param patterns 
  */
-function resolved( amoment: Moment, patterns: Array<{[ key: string ]: string }>) { 
+function resolved( amoment: moment.Moment, patterns: Array<{[ key: string ]: string }>) { 
   patterns.forEach(( pattern ) => {
     if ( FORMATKEYS.contains( pattern.format )) {
          pattern.resolved = amoment.format( pattern.format );
+         
     }
     else if ( SPECIALWEEKKEYS.contains( pattern.format )) {
          // Note: Sunday is 0, first day of Week is: 1
@@ -82,7 +81,7 @@ function resolved( amoment: Moment, patterns: Array<{[ key: string ]: string }>)
 
 /**
  *  Get all patterns from namepattern supported by {Moment}
- *  @param {string} namepattern
+ *  @param   {string}         namepattern - A name possibly containing an kind of date/time format patterns
  *  @returns {Array<string>}
  */
 function patterns( namepattern: string ): Array<{[ key: string ]: string }> {
@@ -98,11 +97,11 @@ function patterns( namepattern: string ): Array<{[ key: string ]: string }> {
 
 /**
  *  Resolves a namepattern.
- *  @param   {string} namepattern - A name possibly containing an kind of date/time format patterns
- *  @param   {Moment} amoment     - A {Moment} instance to resolve the format patterns
+ *  @param   {string}         namepattern - A name possibly containing an kind of date/time format patterns
+ *  @param   {moment.Moment}  amoment     - A {Moment} instance to resolve the format patterns
  *  @returns {string}
  */
-function resolve( namepattern: string, amoment?: Moment ): string {
+function resolve( namepattern: string, amoment?: moment.Moment ): string {
   // check for date patterns in 'namepattern' and resolve them
   const pttrns = patterns( namepattern );
                  resolved( amoment ? amoment : moment(), pttrns );
