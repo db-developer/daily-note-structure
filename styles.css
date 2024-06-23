@@ -1,54 +1,126 @@
 /* obsidian daily note structure plugin */
-/* Settings dialog - 'structure' settings*/
-.setting-item.dly-nt-strct-sttngs-strct.error textarea {
-  color: red;
+/* settings tab bar is the div containing the tabs */
+.dly-nt-strct-settings-tab-bar {
+  display: flex;
+  flex-direction: row;
 }
 
-.dly-nt-strct-action-ribbon-class {
-  --icon-size: var(--icon-size-m)
+/* settings tab is the div containing the tabs name and its part of the tab bar */
+.dly-nt-strct-settings-tab {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--size-4-2);
+  padding: 10px;
+  border: 1px solid var(--background-modifier-border);
+  border-top-left-radius: var(--input-radius);
+  border-top-right-radius: var(--input-radius);
 }
-/* Hide obsidians button for its own 'daily note' in sidebar */
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="የዛሬውን ማስታወሻ ክፈት"          ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="فتح ملاحظة اليوم"            ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Сённяшняя нататка"           ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Obre la nota d'avui"         ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Otevřít dnešní poznámku"     ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Åbn dagens note"             ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Heutige Notiz öffnen"        ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Άνοιγμα σημερινής σημείωσης" ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Abrir la nota de hoy"        ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="گشودنِ یادداشتِ امروز"       ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Ouvrir la note quotidienne"  ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="פתח את ההערה של היום"      ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Otvori današnju bilješku"    ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Mai jegyzet megnyitása"      ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Buka catatan hari ini"       ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Apri nota del giorno"        ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="今日のデイリーノートを開く"    ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="បើកកំណត់ចំណាំប្រចាំថ្ងៃរបស់ថ្ងៃនេះ"],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="오늘의 데일리 노트 열기"       ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Buka nota hari ini"          ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="आजको नोट खोल्नुहोस्"           ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Open de notitie van vandaag" ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Åpne dagens notat"           ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Otwórz dzisiejszą notatkę"   ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Abrir a nota de hoje"        ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Abrir nota de hoje"          ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Deschide nota de azie"       ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Сегодняшняя заметка"         ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="अद्यतनं टिप्पणं उद्घाटयन्तु"        ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Hap shënimet e sotme"        ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="เปิดโน้ตของวันนี้"                ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Bugünün Notunu Aç"           ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Сьогоднішня нотатка"         ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Mở ghi chú hôm nay"          ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="開啟今天的每日筆記"           ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="打开/创建今天的日记"          ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Open today's daily note"     ],
-.dly-nt-strct-no-daily-deflt-icon .side-dock-actions div.side-dock-ribbon-action[aria-label="Open today's note"           ] {
+
+/* settings tab name, is the div containing the name of a tab */
+.dly-nt-strct-settings-tab-name {
+  font-weight: bold;
+}
+
+/* styling for setting tabs (containing the tabs name) which have been selected (usually only one) */
+.dly-nt-strct-settings-active-tab {
+  background-color: var(--color-accent);
+  color: var(--text-on-accent);
+  border: 1px solid var(--color-accent);
+  border-top-left-radius: var(--input-radius);
+  border-top-right-radius: var(--input-radius);
+}
+
+/* settings page is the div which holds the tabs content (settings, help text etc.)*/
+.dly-nt-strct-settings-page {
+  border-style: solid none none none;
+  border-width: 2px;
+  border-color: var(--color-accent);
+  margin-top:   0px;
+  padding-top:  10px;
+}
+
+/* Settings dialog - 'general' settings*/
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-name {
+  font-size: 1.5em;
+}
+
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .description {
+  font-size: 1.25em;
+  margin-bottom: 2px;
+}
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .description.small {
+  font-size: 1.1em;
+}
+
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .declaration {
+  font-size: 1em;
+  margin-top: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+}
+
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .declaration .body {
+  margin-left: 10px;
+}
+
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .declaration .keyword {
+  color: #c574dd;
+}
+
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .declaration .classname {
+  color: #e5c06a;
+}
+
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .declaration .codeblock {
+  color: #ffd71b;
+}
+
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .declaration .operator {
+  color: #43b6c2;
+}
+
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .declaration .string {
+  color: #8ac379;
+}
+
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .declaration .type {
+  color: #3aa9c2;
+}
+
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .declaration .key {
+  color: #abb2bf;
+}
+
+.setting-item.dly-nt-strct-settings-text 
+.setting-item-info .setting-item-description .declaration .token {
+  color: #abb2bf;
+}
+
+/* Settings dialog - 'structure' settings*/
+
+.setting-item.dly-nt-strct-settings-structure .setting-item-info {
   display: none;
 }
-/* Hide the plugins button for its 'daily note structure' in sidebar */
-.dly-nt-strct-no-daily-plugin-icon .side-dock-actions div.dly-nt-strct-action-ribbon-class {
-  display: none;
+
+.setting-item.dly-nt-strct-settings-structure textarea {
+  display: block;
+  width: 100%;
+}
+
+.setting-item.dly-nt-strct-settings-structure.error textarea {
+  color: red;
 }

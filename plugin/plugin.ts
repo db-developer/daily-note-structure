@@ -1,89 +1,12 @@
-import { App, Plugin, PluginSettingTab, Setting, addIcon }    from 'obsidian';
-import { executeDefault }                                     from "../actions"
-import { I18N }                                               from "../i18n";
-import { SVG, setDefaultSVGAttributes }                       from "../utils";
-import { DailyNoteStructurePluginSettings, DEFAULT_SETTINGS } from "../settings";
-
-/**
- *  Class DailyNoteStructurePluginTab
- */
-class DailyNoteStructurePluginTab extends PluginSettingTab {
-  /* CSS class to be used by the ribbon action icon */
-  static #ribbonHTMLClass = "dly-nt-strct-action-ribbon-class";
-  /* */
-  #plugin: DailyNoteStructurePlugin;
-
-  /**
-   *  Constructor of DailyNoteStructurePluginTab
-   * 
-   *  @param {App}                      app 
-   *  @param {DailyNoteStructurePlugin} plugin 
-   */
-	constructor( app: App, plugin: DailyNoteStructurePlugin ) {
-		super( app, plugin );
-		this.#plugin = plugin;
-	}
-
-  /**
-   *  Called to display the setting tab GUI
-   */
-	display(): void {
-		const { containerEl } = this;
-            containerEl.empty();
-
-		new Setting( containerEl )
-        .setName( I18N( "Hide obsidians daily notes icon." ))
-        .setDesc( I18N( "Hides obsidians default icon for daily notes." ))
-        .addToggle( toggle => toggle.setValue( this.#plugin.settings.hideClassicDailiesIcon )
-                                    .onChange(( value ) => {
-                                                this.#plugin.settings.hideClassicDailiesIcon = value;
-                                                this.#plugin.saveData( this.#plugin.settings );
-                                                this.refresh();
-                                    }));
-		new Setting( containerEl )
-        .setName( I18N( "Hide the plugins daily notes icon." ))
-        .setDesc( I18N( "Hides the plugins icon for daily notes." ))
-        .addToggle( toggle => toggle.setValue( this.#plugin.settings.hidePluginsDailiesIcon )
-                                    .onChange(( value ) => {
-                                                this.#plugin.settings.hidePluginsDailiesIcon = value;
-                                                this.#plugin.saveData( this.#plugin.settings );
-                                                this.refresh();
-                                    }));
-    const structureEl = new Setting( containerEl )
-        .setName( I18N( "Describe the daily notes structure." ))
-        .setDesc( I18N( "Insert a json description of the 'daily notes structure'" ))
-        .addTextArea(( area ) => {
-                      area.inputEl.setAttribute( "rows", "20" );
-                      area.inputEl.setAttribute( "cols", "60" );
-                      area.setValue( this.#plugin.settings.structure )
-                          .onChange(( value ) => {
-                                      try { 
-                                        JSON.parse( value );
-                                        structureEl.settingEl.classList.remove( "error" );
-                                      }
-                                      catch( e ) {
-                                        structureEl.settingEl.classList.add( "error" );
-                                      }
-                                      finally {
-                                        this.#plugin.settings.structure = value;
-                                        this.#plugin.saveData( this.#plugin.settings );
-                                      }
-                            })
-                    });
-    try { 
-      JSON.parse( this.#plugin.settings.structure );
-      structureEl.settingEl.classList.add( "dly-nt-strct-sttngs-strct" );
-    } catch( error ) { 
-      structureEl.settingEl.classList.add( "dly-nt-strct-sttngs-strct" );
-      structureEl.settingEl.classList.add( "error" );
-    }
-}
-
-  /**
-   *  Initialize a GUI refresh.
-   */
-  refresh() { this.#plugin.updateStyle()}
-}
+import { addIcon }                                  from "obsidian";
+import { executeDefault }                           from "../actions"
+import { CSSCLS }                                   from "../css";
+import { I18N }                                     from "../i18n";
+import { SVG, setDefaultSVGAttributes }             from "../utils";
+import { DailyNoteStructurePluginSettings,
+         DEFAULT_SETTINGS }                         from "../settings";
+import { AbstractDailyNoteStructurePlugin }         from "./abstract";
+import { DailyNoteStructurePluginTab }              from "./settings";
 
 /**
  *  https://lucide.dev/icons/calendar-fold in v0.315.0 currently unsupported by obsidian
@@ -99,18 +22,13 @@ const CALENDARFOLDSVG =(() => {
 /**
  *  Class DailyNoteStructurePlugin
  */
-export class DailyNoteStructurePlugin extends Plugin {
-  /* CSS class to be added to Obsidians body element for hiding obsidians 'daily note' default icon */
-  static #bodyDefaultHTMLClass = "dly-nt-strct-no-daily-deflt-icon";
-  /* CSS class to be added to Obsidians body element for hiding the plugins 'daily note structure' icon */
-  static #bodyPluginHTMLClass = "dly-nt-strct-no-daily-plugin-icon";
-  /* CSS class to be used by the ribbon action icon */
-  static #ribbonHTMLClass = "dly-nt-strct-action-ribbon-class";
+export class DailyNoteStructurePlugin extends AbstractDailyNoteStructurePlugin {
   /* Identifier of the ribbon icon */
   static #ribbonName = "calendar-fold";
 
   /* Left side ribbon action icon */
   #ribbonElement: HTMLElement;
+
   /* Plugin settings */
 	#settings: DailyNoteStructurePluginSettings;
 
@@ -122,11 +40,13 @@ export class DailyNoteStructurePlugin extends Plugin {
     addIcon( DailyNoteStructurePlugin.#ribbonName, CALENDARFOLDSVG );
 
 		// Create the plugins action button in the left ribbon.
-		this.#ribbonElement = this.addRibbonIcon( DailyNoteStructurePlugin.#ribbonName, I18N( "Create a daily note within its folder structure." ), ( evt: MouseEvent ) => {
+    const tooltip = I18N( "Create a daily note within its folder structure." );
+		this.#ribbonElement = this.addRibbonIcon( DailyNoteStructurePlugin.#ribbonName, tooltip, ( evt: MouseEvent ) => {
       executeDefault( this.app, this.settings );
     });
+    
 		// Perform additional things with the ribbon
-		this.#ribbonElement.addClass( this.ribbonHTMLClass );
+		this.#ribbonElement.addClass( CSSCLS.PLG_SETTINGS_ACTION_BTN );
     const elements = this.#ribbonElement.getElementsByTagName( SVG );
     for ( let i = 0; i < elements.length; ++i ) {
           setDefaultSVGAttributes( elements[i]);
@@ -134,24 +54,9 @@ export class DailyNoteStructurePlugin extends Plugin {
   }
 
   /**
-   *  Return the plugins body CSS class to hide Obsidians 'Daily Note" default icon.
-   */
-  get bodyDefaultHTMLClass(): string { return DailyNoteStructurePlugin.#bodyDefaultHTMLClass }
-
-  /**
-   *  Return the plugins body CSS class to hide the plugins 'Daily Note Structure" icon.
-   */
-  get bodyPluginHTMLClass(): string { return DailyNoteStructurePlugin.#bodyPluginHTMLClass }
-
-  /**
    *  Return the plugins action button
    */
   get ribbonElement(): HTMLElement { return this.#ribbonElement }
-
-  /**
-   *  Return the plugins action button CSS class
-   */
-  get ribbonHTMLClass(): string { return DailyNoteStructurePlugin.#ribbonHTMLClass }
 
   /**
    *  Returns the plugins internal settings.
@@ -170,9 +75,6 @@ export class DailyNoteStructurePlugin extends Plugin {
   async onExternalSettingsChange() {
     // Re-initialize settings
     await this.loadSettings();
-
-    // Call for updating all styles, to match the settings
-    this.updateStyle();
   }
 
   /**
@@ -187,19 +89,10 @@ export class DailyNoteStructurePlugin extends Plugin {
 
     // Adds the plugins buttons the the ribbons
     this.#addRibbons();
-
-    // Call for updating all styles, to match the settings
-    this.updateStyle();
   }
 
   /**
    *  Called upon unloading the plugin
    */
   onunload() { }
-
-  // update the styles (at the start, or as the result of a settings change)
-  updateStyle() {
-    document.body.classList.toggle( this.bodyDefaultHTMLClass, this.settings.hideClassicDailiesIcon );
-    document.body.classList.toggle( this.bodyPluginHTMLClass,  this.settings.hidePluginsDailiesIcon );
-  }
 }

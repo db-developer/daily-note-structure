@@ -6,6 +6,7 @@ export interface DailyNoteStructurePluginSettings {
   hideClassicDailiesIcon: boolean;
   hidePluginsDailiesIcon: boolean;
   structure: string;
+  tabid: string;
 }
 
 /**
@@ -15,5 +16,14 @@ export interface DailyNoteStructurePluginSettings {
 export const DEFAULT_SETTINGS: DailyNoteStructurePluginSettings = {
 	hideClassicDailiesIcon: false,
   hidePluginsDailiesIcon: false,
-  structure: ""
+  structure: "",
+  tabid: "general"
+}
+
+/**
+ *  Defines a set of sub-tabs, that can be found on the plugins settings tabs
+ */
+export enum SettingSubTabs {
+  General = "general",
+  Ribbons = "ribbons"
 }

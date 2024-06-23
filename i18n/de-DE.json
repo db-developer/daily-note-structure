@@ -9,6 +9,10 @@
   "Hides obsidians default icon for daily notes.":          "Blendet das Icon für Obsidians 'daily note' Standard-Plugin aus.",
   "Hides the plugins icon for daily notes.":                "Blendet das Icon des 'daily note structure' Plugins aus.",
   "Missing template file":                                  "Das folgende Template fehlt:",
+  "Ribbons and Buttons":                                    "Ribbons und Buttons",
   "Settings property 'structure' contains unknown type:":   "Die Eigenschaft 'structure' in den Plugin-Einstellungen enthält einen unbekannten 'type'.",
-  "Settings property 'structure' must be of type 'array'":  "Die Eigenschaft 'structure' in den Plugin-Einstellungen muss ein Array enthalten."
+  "Settings property 'structure' must be of type 'array'":  "Die Eigenschaft 'structure' in den Plugin-Einstellungen muss ein Array enthalten.",
+  "Toggle ribbon buttons on and off":                       "Buttons im Seitenleisten-Menü ein- und ausschalten",
+  "HOW_TO_TOGGLE_RIBBON_BUTTONS_0":                         "Seit der Version v1.1.0 von Obsidian, besteht die Möglichkeit das Seitenleisten-Menü mit den Buttons, in den Obsidian 'Einstellungen' anzupassen. Nach dem Öffnen der 'Einstellungen', auf der linken Seite 'Darstellung' auswählen. Danach auf der rechten Seite bis zum Punkt 'Interface' herunter scrollen. Anschließend bei 'Seitenleisten-Menü' den Button 'Verwalten' anklicken.",
+  "HOW_TO_TOGGLE_RIBBON_BUTTONS_1":                         "Nun kann der Button von Obsidians Standard-App für 'daily notes' und der Button für die App 'daily folder structure' ein- und ausgeschaltet oder verschoben werden."
 }
