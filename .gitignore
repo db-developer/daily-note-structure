@@ -21,5 +21,5 @@ data.json
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
 
-# Exclude own development environment
-*.ps1
+# Exclude coverage. Unittests not yet ready.
+coverage

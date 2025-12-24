@@ -27,10 +27,10 @@ export class DailyNoteStructurePlugin extends AbstractDailyNoteStructurePlugin {
   static #ribbonName = "calendar-fold";
 
   /* Left side ribbon action icon */
-  #ribbonElement: HTMLElement;
+  #ribbonElement!: HTMLElement;
 
   /* Plugin settings */
-	#settings: DailyNoteStructurePluginSettings;
+	#settings!: DailyNoteStructurePluginSettings;
 
   /**
    *  Adds the plugins ribbon(s) to obsidians GUI

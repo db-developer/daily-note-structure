@@ -70,10 +70,10 @@ const reg = new RegExp( "{{(\\w+)}}", "gm" );
  */
 function resolved( amoment: moment.Moment, patterns: Array<{[ key: string ]: string }>) { 
   patterns.forEach(( pattern ) => {
-    if ( FORMATKEYS.contains( pattern.format )) {
+    if ( FORMATKEYS.includes( pattern.format )) {
          pattern.resolved = amoment.format( pattern.format );
     }
-    else if ( SPECIALWEEKKEYS.contains( pattern.format )) {
+    else if ( SPECIALWEEKKEYS.includes( pattern.format )) {
          // Note: Sunday is 0, first day of Week is: 1
          const cday    = amoment.day();
          const delta   = cday < 1 ? 6 : cday - 1;
@@ -177,13 +177,13 @@ function createFolderStructure( app: App, node: FolderStructure ): FolderStructu
 async function createFileData( app: App, node: FolderStructure ): Promise<string|undefined> {
   if ( ! node.template ) { return Promise.resolve( undefined )}
   else {
-    const file = this.app.vault.getAbstractFileByPath( node.template );
+    const file = app.vault.getAbstractFileByPath( node.template );
     if ( ! ( file instanceof TFile )) {
          const error = new Error( `${ I18N( "Missing template file" )} '${ node.template }'` );
          log.notice( I18N( "Failed to create file content" ), error );
          return Promise.resolve( undefined );
     }
-    else { return this.app.vault.read( file )}
+    else { return app.vault.read( file )}
   }
 }
 
@@ -256,7 +256,7 @@ function build( app: App, parents: readonly string[], structure: FolderStructure
 function parseStructure( structure: string ): FolderStructure[] {
   let obj = undefined;
   try { obj= JSON.parse( structure )}
-  catch( error ) { log.notice( I18N( "Failed to parse settings property 'structure'" ), error )}
+  catch( error ) { log.notice( I18N( "Failed to parse settings property 'structure'" ), error as Error | undefined )}
   if ( ! Array.isArray( obj )) { 
        log.notice( I18N( "Settings property 'structure' must be of type 'array'" ));
        return [];

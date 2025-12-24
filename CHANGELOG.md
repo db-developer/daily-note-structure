@@ -16,7 +16,38 @@ All notable changes to this project will be documented in this file.
 
 - No fixes yet
 
-## [1.1.0] - 2021-06-23
+## [1.3.0] - 2025-12-23
+
+Reorganized and Refactored
+
+### Changed
+
+- Moved config files to ./config
+- Moved all source (test and lib folder) to src
+
+### Removed
+
+- Toolchain: mocha
+- Toolchain: nyc
+- Toolchain: chai
+- Toolchain: esbuild
+- Toolchain: sinon
+- Toolchain: bump version
+
+## [1.2.0] - 2024-09-02
+
+### Added
+
+- Folder 'lib' for typescript files
+- Folder 'test' for javascript testing files
+- Overrides to 'eslint.rc' for linting typescript and javascript files
+- Unit testing with mocha and nyc
+
+### Changed
+
+- Moved typescript files to new folder lib
+
+## [1.1.0] - 2024-06-23
 
 ### Added
 
@@ -35,7 +66,7 @@ All notable changes to this project will be documented in this file.
 
 - Settings for toggling ribbon buttons removed on request by 'obsidian plugin review'
 
-## [1.0.1] - 2021-06-18 21:00
+## [1.0.1] - 2024-06-18 21:00
 
 ### Fixed
 
