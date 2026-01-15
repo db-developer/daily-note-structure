@@ -1,45 +1,53 @@
 # Daily Note Structure
 
-Can be used to create a folder structure which finally holds the actual daily note.
-If your 'daily' notes simply are a number of markdown files within a default folder, you will NOT need this plugin.
+This plugin automates the creation of a folder and file structure for daily notes.
+If your daily notes are just individual markdown files in a single folder, you do **not** need this plugin.
 
-The purpose of this plugin is, to automate the daily creation of multiple folders and files.
+The purpose of this plugin is to simplify and automate the **daily creation** of **multiple** folders and files for daily notes.
 
-## Best Result Plugins
+---
 
-You may want to install the following obsidian plugins:
+## Recommended Plugins
 
-- [Templater by SilentVoid](https://obsidian.md/plugins?search=templater)
-  Use this, to automatically generate 'folder not' and 'file' content.
+For best results, consider installing the following Obsidian plugins:
 
-- [Folder Notes by Lost Paul](https://obsidian.md/plugins?search=folder%20notes)
-  Use this, to display default notes, by clicking on folders
+* [**Templater** by SilentVoid](https://obsidian.md/plugins?search=templater)
+  Use this to automatically generate folder and file content.
 
-## Date/Time format patterns
-For compatibility reasons, 'daily note structure' uses 'moment.js' so all of 
-['moment.js' formats](https://momentjs.com/docs/#/displaying/format/) are available.
+* [**Folder Notes** by Lost Paul](https://obsidian.md/plugins?search=folder%20notes)
+  Use this to display default notes when clicking on folders.
 
-Additionally the following formats can be used:
+---
 
-| Description                  | Token  | Output                                 |
-| ---------------------------: | :----- | :------------------------------------- |
-| Month of the weeks first day | MOW    | 1 2 ... 11 12                          |
-|                              | MoW    | 1st 2nd ... 11th 12th                  |
-|                              | MMOW   | 01 02 ... 11 12                        |
-|                              | MMMOW  | Jan Feb ... Nov Dec                    |
-|                              | MMMMOW | January February ... November December |
+## Date/Time Format Patterns
 
-The format above may be useful for the first days of a new month, if you want to keep all 'dailies' of a week in the same folder.
+For compatibility, *Daily Note Structure* uses [moment.js](https://momentjs.com/docs/#/displaying/format/) formats.
+All standard moment.js formats are available.
 
-Format patterns to be used by 'moment.js' must follow the format '{{ ... }}' and are replaced first.
+Additionally, the following custom formats are supported:
 
-### Format errors
+|                   Description | Token  | Output                           |
+| ----------------------------: | :----- | :------------------------------- |
+| Month of the week’s first day | MOW    | 1, 2, ..., 11, 12                |
+|                               | MoW    | 1st, 2nd, ...,,11th, 12th        |
+|                               | MMOW   | 01, 02, ..., 11, 12              |
+|                               | MMMOW  | Jan, Feb, ..., Nov, Dec          |
+|                               | MMMMOW | January, February, ..., December |
 
-Evaluation errors for bad format patterns can be found in obsidians developer console (<shift>+<ctrl>+i)
-Note: Not every bad pattern will  fail with an error. Some will silently return 'unexpected results'.
+These formats are useful for grouping daily notes of a week in the same folder.
 
-### Folder structure
-```typescript
+---
+
+### Format Errors
+
+Evaluation errors for invalid patterns can be found in Obsidian’s developer console (`Shift+Ctrl+I`).
+Note: Not all invalid patterns throw an error; some may return unexpected results silently.
+
+---
+
+## Folder Structure
+
+```ts
 export interface FolderStructure {
   type: "folder" | "file";
   namepattern: string;
@@ -49,54 +57,67 @@ export interface FolderStructure {
 }
 ```
 
-Using the FolderStructure interface, you can setup a 'structure' on the plugins settings page.
-The structure itself is an Array of FolderStructure objects.
+Use the `FolderStructure` interface to configure your folder/file structure in the plugin’s settings page.
+The structure is an array of `FolderStructure` objects:
 
 ```json
-[{
-  "type": "folder",
-  "namepattern": "{{YYYY}}",
-  "template": "Plugins/Templater/Templates/yearly_folder_note_template.md",
-  "description": "yearly folder base",
-  "children": [{
+[
+  {
     "type": "folder",
-    "namepattern": "{{MMOW}} - {{MMM}} {{YYYY}}",
-    "template": null,
-    "description": "folder matching the month for the first day in the week",
-    "children": [{
-      "type": "folder",
-      "namepattern": "KW {{WW}} ({{MMM}} {{YYYY}})",
-      "template": null,
-      "description": "folder matching the years week",
-      "children": [{
-        "type": "file",
-        "namepatern": "{{YYYY}}-{{MM}}-{{DD}}",
-        "template": "Plugins/Templater/Templates/daily_template.md"
-      }]
-    }]
-  }]
-}]
+    "namepattern": "{{YYYY}}",
+    "template": "Plugins/Templater/Templates/yearly_folder_note_template.md",
+    "description": "yearly folder base",
+    "children": [
+      {
+        "type": "folder",
+        "namepattern": "{{MMOW}} - {{MMM}} {{YYYY}}",
+        "template": null,
+        "description": "folder matching the month for the first day in the week",
+        "children": [
+          {
+            "type": "folder",
+            "namepattern": "KW {{WW}} ({{MMM}} {{YYYY}})",
+            "template": null,
+            "description": "folder matching the year’s week",
+            "children": [
+              {
+                "type": "file",
+                "namepattern": "{{YYYY}}-{{MM}}-{{DD}}",
+                "template": "Plugins/Templater/Templates/daily_template.md"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
 ```
 
-#### Property 'type': {string} - required
-Must be one of "folder" or "file"
+---
 
-#### Property 'namepattern': {string} - required
-A string, which can hold any combination of characters ad patterns.
-Patterns must follow '{{<pattern>}}' with pattern being exactly one of ['moment.js' formats](https://momentjs.com/docs/#/displaying/format/)
+### Properties
 
-Do not combine patterns inline. Don't use {{YYYY-MM-DD}}.
-The supported way of combining patterns would be '{{YYYY}}-{{MM}}-{{DD}}' instead.
+**`type`** {string} – *required*
+Must be `"folder"` or `"file"`.
 
-#### Property 'template': {string} - optional
-An optional string, which can hold a path to a markdown file, that can be used as template.
-If a template is specified for 'type: "file"', the generated files content will be that of 'template'.
-If a template is specified for 'type: "folder"', a markdown file will be generated inside the folder, with the folders name, and its content will be that of 'template'. For best results, additionally install a 'folder note' plugin.
+**`namepattern`** {string} – *required*
+A string containing characters and patterns.
+Patterns must follow `{{<pattern>}}`, where `<pattern>` is a valid [moment.js format](https://momentjs.com/docs/#/displaying/format/).
 
-### Property 'description': {string} - optional
-An optional string, which can be used to describe the files or folders purpose.
-This property currently is not used for anything else.
+Do **not** combine patterns inline (e.g., `{{YYYY-MM-DD}}`).
+Use `{{YYYY}}-{{MM}}-{{DD}}` instead.
 
-### Property 'children': {Array<FolderStructure>} - optional
-An Array of further FolderStructure nodes. This property is used by nodes of 'type: "folder"' only. If specified on "files", the property is ignored.
+**`template`** {string} – *optional*
+Path to a markdown file used as a template.
 
+* For `type: "file"`, the generated file’s content will match the template.
+* For `type: "folder"`, a markdown file with the folder name will be created inside the folder, containing the template content.
+  For best results, install a folder note plugin.
+
+**`description`** {string} – *optional*
+Optional description of the folder or file. Currently not used by the plugin.
+
+**`children`** {Array<FolderStructure>} – *optional*
+Array of child `FolderStructure` nodes. Only applicable for folders.
+Ignored if specified on a file.
