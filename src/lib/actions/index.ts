@@ -1,1 +1,1 @@
-export * from "./execute.default";
+export { executeDefault } from "./execute.default";

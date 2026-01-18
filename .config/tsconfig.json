@@ -22,6 +22,7 @@
   },
   "include": [
     "../src/lib/**/*.ts",
+    "../src/lib/types/rollup-globals.d.ts",
     "../src/test/**/*.ts",
     "../src/test/00.initial/**/*.ts",
     "../src/test/*.*/**/*.ts"

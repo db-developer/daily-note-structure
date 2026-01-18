@@ -94,6 +94,15 @@ The structure is an array of `FolderStructure` objects:
 ]
 ```
 
+> **Note on file extensions**
+>
+> File extensions are **not added implicitly**.
+> A file will only have an extension if it is explicitly included in the
+> `namepattern` (for example `{{YYYY}}-{{MM}}-{{DD}}.md`).
+>
+> In the example above, the generated file will be named `YYYY-MM-DD`
+> **without** a `.md` suffix unless the suffix is part of the pattern.
+
 ---
 
 ### Properties
@@ -105,6 +114,13 @@ Must be `"folder"` or `"file"`.
 A string containing characters and patterns.
 Patterns must follow `{{<pattern>}}`, where `<pattern>` is a valid [moment.js format](https://momentjs.com/docs/#/displaying/format/).
 
+File name patterns are resolved verbatim.
+No file extension is added automatically.
+
+If a generated file is expected to be a Markdown note, the `.md` suffix
+must be explicitly included in the `namepattern`
+(e.g. `{{YYYY}}-{{MM}}-{{DD}}.md`).
+
 Do **not** combine patterns inline (e.g., `{{YYYY-MM-DD}}`).
 Use `{{YYYY}}-{{MM}}-{{DD}}` instead.
 
@@ -112,7 +128,13 @@ Use `{{YYYY}}-{{MM}}-{{DD}}` instead.
 Path to a markdown file used as a template.
 
 * For `type: "file"`, the generated file’s content will match the template.
-* For `type: "folder"`, a markdown file with the folder name will be created inside the folder, containing the template content.
+* For `type: "folder"`, a folder note is created **only if a `template` is specified**.
+  The folder note will be created inside the folder, containing the template content.
+  In this case, the folder note is always a Markdown file (`.md`).
+
+  The file name is derived directly from the folder name;
+  both the file name and the `.md` suffix are **implicit and not configurable**.  
+
   For best results, install a folder note plugin.
 
 **`description`** {string} – *optional*

@@ -1,56 +1,22 @@
-import DE from "./de-DE.json";
-
-const EMPTY = "";
-const LANGUAGE = "language";
-const DFLTLANG = "en";
-
-/* A mapping between language keys and translation mappings */
-const LANGUAGES: {[ key: string ]: {[ key: string ]: string }} = {
-  "de": DE
-}
+import      { en                  } from "./en";
+import      { de                  } from "./de";
+import type { I18NResourcesByLang } from "ts-obsidian-i18n";
+import type { I18NKeyMap          } from "./types";
 
 /**
- *  Returns obsidians current locale setting
- *  @returns {sting|null}
- */
-function getLocale(): string|null {
-  return window.localStorage.getItem( LANGUAGE );
-}
-
-/**
- *  Returns the internationalization support for the language selected
- *  in obsidians settings.
- * 
- *  @returns {[ key: string ]: string } a key to translation mapping for
- *           the language selected in obsidians settings.
- */
-function getI18NSupport():  {[ key: string ]: string } {
-  const lang = getLocale() || EMPTY;
-  return LANGUAGES[ lang ] || { };
-}
-
-/* 
- * Note: Obsidians Language support is static. If the language is changed, obsidian
- *       must be restarted. In case this might be changed, I18NSupport may become
- *       dynamic.
- */
-/* Internationalization support for the language selected in obsidians settings. */
-const I18NSUPPORT: {[ key: string ]: string } = getI18NSupport();
-
-/**
- *  Internationalization support, which returns translations for supported languages.
+ * Collection of all language resources indexed by language code.
  *
- *  @param   {string}  key - The phrase which is to be translated.
- *  @returns the translated {string}
+ * This object aggregates the individual language resources (`en`, `de`, etc.)
+ * into a single map that can be passed to the i18n service for runtime translation.
+ * TypeScript enforces that each resource provides translations for **all keys** defined
+ * in `I18NKeys`.
+ *
+ * Example usage:
+ * ```ts
+ * import { resources } from './lang';
+ * import { I18NService } from './i18nService';
+ * 
+ * I18NService.init({ resources });
+ * ```
  */
-export function I18N( key: string ): string { return I18NSUPPORT[ key ] || key }
-
-/**
- *  Returns the locale as set by obsidian settings page.
- *  (Required to correctly initialize 'momentjs')
- *  @returns {string} which defaults to "en"
- */
-export function locale( dflt = DFLTLANG ) : string {
-  const locale = getLocale();
-  return locale ? locale : ( dflt || DFLTLANG );
-}
+export const RESOURCES: I18NResourcesByLang<I18NKeyMap> = { en, de };

@@ -1,0 +1,15 @@
+declare const __PLUGIN_NAME__: string | undefined;
+declare const __PLUGIN_DESCRIPTION__: string | undefined;
+declare const __PLUGIN_VERSION__: string | undefined;
+declare const __PLUGIN_AUTHOR__: string | undefined;
+declare const __PLUGIN_AUTHOR_URL__: string | undefined;
+declare const __PLUGIN_REPOSITORY__: string | undefined;
+declare const __PLUGIN_README_MD__: string | undefined;
+declare const __PLUGIN_SETTINGS_NAMEPATTERN_CTXHLP_DE__: string | undefined;
+declare const __PLUGIN_SETTINGS_NAMEPATTERN_CTXHLP_EN__: string | undefined;
+declare const __PLUGIN_SETTINGS_TEMPLATE_CTXHLP_DE__: string | undefined;
+declare const __PLUGIN_SETTINGS_TEMPLATE_CTXHLP_EN__: string | undefined;
+declare const __PLUGIN_SETTINGS_TYPE_CTXHLP_DE__: string | undefined;
+declare const __PLUGIN_SETTINGS_TYPE_CTXHLP_EN__: string | undefined;
+declare const __PLUGIN_SETTINGS_RIBBONS_HELP_DE__: string | undefined;
+declare const __PLUGIN_SETTINGS_RIBBONS_HELP_EN__: string | undefined;

@@ -1,10 +1,10 @@
-export const FILE = "file";
-export const FOLDER = "folder";
+export const FILE = "file" as const;
+export const FOLDER = "folder" as const;
 /**
  *  Interface FolderStructure
  */
 export interface FolderStructure {
-  type: "file" | "folder";
+  type: typeof FILE | typeof FOLDER;
   namepattern: string;
   template?: string;
   description?: string;

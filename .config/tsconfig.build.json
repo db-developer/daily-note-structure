@@ -1,7 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "include": [
-    "../src/lib/**/*.ts"
+    "../src/lib/**/*.ts",
+    "../src/lib/types/rollup-globals.d.ts"
   ],
   "exclude": [
     "../src/test/**"

@@ -1,11 +1,29 @@
+import   fs            from "node:fs";
+import   path          from "node:path";
 import   typescript    from "@rollup/plugin-typescript";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import   commonjs      from "@rollup/plugin-commonjs";
 import   json          from "@rollup/plugin-json";
 import   strip         from '@rollup/plugin-strip';
 import   terser        from "@rollup/plugin-terser";
+import   replace       from "@rollup/plugin-replace";
+import   manifest      from "../manifest.json" assert { type: "json" };
+
+function readMarkdown(file) {
+  return fs.readFileSync(path.resolve(file), "utf8");
+}
 
 const isProd = ( process.env.BUILD === "production" );
+
+const namePatternDE = readMarkdown( "docs/namepattern.de.md" );
+const namePatternEN = readMarkdown( "docs/namepattern.en.md" );
+const templateDE    = readMarkdown( "docs/template.de.md"    );
+const templateEN    = readMarkdown( "docs/template.en.md"    );
+const typeDE        = readMarkdown( "docs/type.de.md"        );
+const typeEN        = readMarkdown( "docs/type.en.md"        );
+const ribbonsDE     = readMarkdown( "docs/ribbons.de.md"     );
+const ribbonsEN     = readMarkdown( "docs/ribbons.en.md"     );
+const readme        = readMarkdown( "README.md"              );
 
 const banner = 
 `/*
@@ -33,7 +51,28 @@ export default {
     "@codemirror/autocomplete"
   ],
   plugins: [
-    json(),
+    json(), // required to import manifest.json
+    replace({
+      preventAssignment: true,
+      values: {
+        __PLUGIN_FALLBACK_LANGUAGE__:              JSON.stringify("en"),
+        __PLUGIN_NAME__:                           JSON.stringify(manifest.name),
+        __PLUGIN_VERSION__:                        JSON.stringify(manifest.version),
+        __PLUGIN_AUTHOR__:                         JSON.stringify(manifest.author),
+        __PLUGIN_AUTHOR_URL__:                     JSON.stringify(manifest.authorUrl),
+        __PLUGIN_REPOSITORY__:                     JSON.stringify(manifest.repository),
+        __PLUGIN_DESCRIPTION__:                    JSON.stringify(manifest.description),
+        __PLUGIN_README_MD__:                      JSON.stringify(readme),
+        __PLUGIN_SETTINGS_NAMEPATTERN_CTXHLP_DE__: JSON.stringify(namePatternDE),
+        __PLUGIN_SETTINGS_NAMEPATTERN_CTXHLP_EN__: JSON.stringify(namePatternEN),
+        __PLUGIN_SETTINGS_TEMPLATE_CTXHLP_DE__:    JSON.stringify(templateDE),
+        __PLUGIN_SETTINGS_TEMPLATE_CTXHLP_EN__:    JSON.stringify(templateEN),
+        __PLUGIN_SETTINGS_TYPE_CTXHLP_DE__:        JSON.stringify(typeDE),
+        __PLUGIN_SETTINGS_TYPE_CTXHLP_EN__:        JSON.stringify(typeEN),
+        __PLUGIN_SETTINGS_RIBBONS_HELP_DE__:       JSON.stringify(ribbonsDE),
+        __PLUGIN_SETTINGS_RIBBONS_HELP_EN__:       JSON.stringify(ribbonsEN)
+      },
+    }),
     typescript({tsconfig: ".config/tsconfig.build.json" }),
     nodeResolve({browser: true}),
     commonjs(),
@@ -41,7 +80,7 @@ export default {
     isProd && strip({
       include: '**/*.(js|ts)',
       exclude: 'src/lib/main.ts', // console.logging: "Plugin loaded" should be available!
-      functions: ['console.*'],
+      functions: [/*'console.*'*/],
       debugger: true
     }),
     // Remove all remaining comments

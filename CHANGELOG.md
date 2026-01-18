@@ -16,6 +16,25 @@ All notable changes to this project will be documented in this file.
 
 - No fixes yet
 
+## [1.4.0] - 2026-01-18
+
+### Known Issues
+
+- In some cases, the algorithm becomes inconsistent at the beginning
+  of a month when generating calendar-week-dependent patterns.
+
+### Changed
+
+- Moved logging to `ts-obsidian-log`
+- Moved i18n to `ts-obsidian-i18n`
+- Moved settings handling to `ts-obsidian-plugin`
+- Moved tabular settings UI to `ts-obsidian-ui-settings`
+- `execute.default` now consistently uses `async`
+
+### Added
+
+- Added a full test suite for `execute.default`
+
 ## [1.3.0] - 2025-12-23
 
 Reorganized and Refactored
